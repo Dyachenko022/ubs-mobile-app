@@ -1,0 +1,145 @@
+platform :ios, '11.0'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+
+target 'ipb_app' do
+
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # to enable hermes on iOS, change `false` to `true` and then install pods
+    :hermes_enabled => false
+  )
+
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+  pod 'react-native-blob-util', :path => '../node_modules/react-native-blob-util'
+
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
+  pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts.podspec"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
+  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary.podspec"
+
+
+  use_native_modules!
+
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+
+    # Enables Flipper.
+  use_flipper!({ 'Flipper-Folly' => '2.5.3', 'Flipper' => '0.87.0', 'Flipper-RSocket' => '1.3.1', 'Flipper-DoubleConversion' => '1.1.7' })
+end
+
+target 'elt_app' do
+
+  config = use_native_modules!
+
+  use_react_native!(
+	    :path => config[:reactNativePath],
+	    # to enable hermes on iOS, change `false` to `true` and then install pods
+	    :hermes_enabled => false
+  )
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+  pod 'react-native-blob-util', :path => '../node_modules/react-native-blob-util'
+
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
+  pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts.podspec"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
+  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary.podspec"
+
+  use_native_modules!
+
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+
+    # Enables Flipper.
+    use_flipper!({ 'Flipper-Folly' => '2.5.3', 'Flipper' => '0.87.0', 'Flipper-RSocket' => '1.3.1', 'Flipper-DoubleConversion' => '1.1.7' })
+end
+
+target 'krk_app' do
+
+  config = use_native_modules!
+
+  use_react_native!(
+	    :path => config[:reactNativePath],
+	    # to enable hermes on iOS, change `false` to `true` and then install pods
+	    :hermes_enabled => false
+  )
+
+  use_react_native!(:path => config["reactNativePath"])
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+  pod 'react-native-blob-util', :path => '../node_modules/react-native-blob-util'
+
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
+  pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts.podspec"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
+  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary.podspec"
+
+  use_native_modules!
+
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+
+    # Enables Flipper.
+    use_flipper!({ 'Flipper-Folly' => '2.5.3', 'Flipper' => '0.87.0', 'Flipper-RSocket' => '1.3.1', 'Flipper-DoubleConversion' => '1.1.7' })
+end
+
+target 'rsi_app' do
+
+  config = use_native_modules!
+
+  use_react_native!(
+	    :path => config[:reactNativePath],
+	    # to enable hermes on iOS, change `false` to `true` and then install pods
+	    :hermes_enabled => false
+  )
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+  pod 'react-native-blob-util', :path => '../node_modules/react-native-blob-util'
+
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
+  pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts.podspec"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
+  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary.podspec"
+
+  use_native_modules!
+
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+
+    # Enables Flipper.
+    use_flipper!({ 'Flipper-Folly' => '2.5.3', 'Flipper' => '0.87.0', 'Flipper-RSocket' => '1.3.1', 'Flipper-DoubleConversion' => '1.1.7' })
+end
+
+target 'rub_app' do
+
+  config = use_native_modules!
+
+  use_react_native!(
+	    :path => config[:reactNativePath],
+	    # to enable hermes on iOS, change `false` to `true` and then install pods
+	    :hermes_enabled => false
+  )
+
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+  pod 'react-native-blob-util', :path => '../node_modules/react-native-blob-util'
+  
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
+  pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts.podspec"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
+  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary.podspec"
+
+  use_native_modules!
+
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+
+    # Enables Flipper.
+    use_flipper!({ 'Flipper-Folly' => '2.5.3', 'Flipper' => '0.87.0', 'Flipper-RSocket' => '1.3.1', 'Flipper-DoubleConversion' => '1.1.7' })
+end
+
+post_install do |installer|
+    react_native_post_install(installer)
+    installer.pods_project.build_configurations.each do |config|
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+    end
+end

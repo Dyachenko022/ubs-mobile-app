@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-share/android/src/main/java/cl/json/social/ShareIntent.java b/node_modules/react-native-share/android/src/main/java/cl/json/social/ShareIntent.java
+index c9e6d29..00efaf2 100644
+--- a/node_modules/react-native-share/android/src/main/java/cl/json/social/ShareIntent.java
++++ b/node_modules/react-native-share/android/src/main/java/cl/json/social/ShareIntent.java
+@@ -265,6 +265,7 @@ public abstract class ShareIntent {
+             chooser = Intent.createChooser(this.getIntent(), this.chooserTitle);
+         }
+         chooser.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
++        chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+ 
+         if (ShareIntent.hasValidKey("showAppsToView", options) && ShareIntent.hasValidKey("url", options)) {
+             Intent viewIntent = new Intent(Intent.ACTION_VIEW);

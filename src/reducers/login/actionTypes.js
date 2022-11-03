@@ -1,0 +1,7 @@
+export const SET_CREDENTIALS = 'app.SET_CREDENTIALS';
+
+export const SET_NOTIFICATION = 'app.SET_NOTIFICATION';
+
+export const SET_VERSION_APP = 'app.SET_VERSION_APP';
+
+export const SET_AUTOENROLL_FACEID = 'login/SET_AUTOENROLL_FACEID';

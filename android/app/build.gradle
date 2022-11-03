@@ -1,0 +1,288 @@
+apply plugin: "com.android.application"
+//apply plugin: "com.huawei.agconnect"
+
+import com.android.build.OutputFile
+
+project.ext.react = [ entryFile: "index.android.js",
+                      enableHermes: true,  // clean and rebuild if changing
+];
+apply from: "../../node_modules/react-native/react.gradle"
+
+def enableSeparateBuildPerCPUArchitecture = false
+
+def enableProguardInReleaseBuilds = false
+
+def jscFlavor = 'org.webkit:android-jsc:+'
+
+def enableHermes = project.ext.react.get("enableHermes", true);
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    dexOptions {
+        javaMaxHeapSize "3g"
+    }
+
+    packagingOptions {
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        //missingDimensionStrategy "react-native-navigation", "ReactNative63" // react-native-navigation
+        missingDimensionStrategy 'react-native-camera', 'general'
+        applicationId "ru"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        multiDexEnabled true
+        ndk {
+            abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+        }
+    }
+
+    signingConfigs {
+        release {
+            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+            }
+        }
+    }
+
+    splits {
+        abi {
+            reset()
+            enable enableSeparateBuildPerCPUArchitecture
+            universalApk true  // If true, also generate a universal APK
+            include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+        }
+    }
+    flavorDimensions 'themes', 'targetServer'
+    productFlavors {
+        ipb {
+            dimension 'themes'
+            applicationId 'ru.ipb.ubsmobile'
+            versionCode 64
+            versionName "3.4.5"
+        }
+        krk {
+            dimension 'themes'
+            applicationId 'ru.krk.ubsmobile'
+            versionCode 63
+            versionName "3.0.2"
+        }
+        elt {
+            dimension 'themes'
+            applicationId 'ru.elt.ubsmobile'
+            versionCode 64
+            versionName "3.0.3"
+        }
+        rsi {
+            dimension 'themes'
+            applicationId 'ru.rsi.ubsmobile'
+            versionCode 65
+            versionName "3.0.5"
+        }
+        rub {
+            dimension 'themes'
+            applicationId 'ru.rubank.ubsmobile'
+            versionCode 66
+            versionName "3.0.6"
+        }
+        support {
+            dimension 'targetServer'
+            resValue "string", "ServerUrl", "https://test.unisab.ru:8064"
+        }
+        saturn {
+            dimension 'targetServer'
+            resValue "string", "ServerUrl", "https://test.unisab.ru"
+        }
+        bankServerIpb {
+            dimension 'targetServer'
+            resValue "string", "ServerUrl", "https://on-linem.ipb.ru"
+        }
+        bankServerRub {
+            dimension 'targetServer'
+            resValue "string", "ServerUrl", "https://212.48.39.11:11443"
+        }
+        bankServerKrk {
+            dimension 'targetServer'
+            resValue "string", "ServerUrl", "https://online.crocusbank.ru"
+        }
+        bankServerElt {
+            dimension 'targetServer'
+            resValue "string", "ServerUrl", "https://dbo.bankelita.ru:999"
+        }
+        bankServerRsi {
+            dimension 'targetServer'
+            resValue "string", "ServerUrl", "https://ib.bankrsi.ru:5555"
+        }
+    }
+    variantFilter { variant ->
+        def names = variant.flavors*.name
+        String bank
+        String server
+
+        flavors.each {
+            if (it.dimension == "themes") {
+                bank = it.name
+            }
+            if (it.dimension == "targetServer") {
+                server = it.name
+            }
+        }
+
+        if (variant.buildType.getName() == "debug" && server != "saturn") {
+            setIgnore(true);
+        }
+
+        if (server.contains("bankServer")) {
+            if ((bank == "ipb" && !server.contains("bankServerIpb"))
+                || (bank == "rub" && !server.contains("bankServerRub"))
+                || (bank == "krk" && !server.contains("bankServerKrk"))
+                || (bank == "elt" && !server.contains("bankServerElt"))
+                || (bank == "rsi" && !server.contains("bankServerRsi"))
+            ) {
+                setIgnore(true);
+            }
+        }
+    }
+    sourceSets {
+        ipb {
+            res {
+                srcDirs 'src/ipb/res/'
+            }
+            manifest.srcFile 'src/ipb/AndroidManifest.xml'
+        }
+        krk {
+            res {
+                srcDirs 'src/krk/res/'
+            }
+            manifest.srcFile 'src/krk/AndroidManifest.xml'
+        }
+        elt {
+            res {
+                srcDirs 'src/elt/res/'
+            }
+            manifest.srcFile 'src/elt/AndroidManifest.xml'
+        }
+        rsi {
+            res {
+                srcDirs 'src/rsi/res/'
+            }
+            manifest.srcFile 'src/rsi/AndroidManifest.xml'
+        }
+        rub {
+            res {
+                srcDirs 'src/rub/res/'
+            }
+            manifest.srcFile 'src/rub/AndroidManifest.xml'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+            resValue "string", "cleartextTrafficPermitted", "false"
+        }
+        debug {
+            debuggable true
+            signingConfig signingConfigs.release
+            resValue "string", "cleartextTrafficPermitted", "true"
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "${defaultConfig.applicationId}_${variant.mergedFlavor.versionName}(${variant.mergedFlavor.versionCode}).apk"
+        }
+        variant.outputs.each { output ->
+            def versionCodes = ["armeabi-v7a":1, "x86":2, "arm64-v8a": 3, "x86_64": 4]
+            def abi = output.getFilter(OutputFile.ABI)
+            if (abi != null) {  // null for the universal-debug, universal-release variants
+                output.versionCodeOverride =
+                        versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation project(':@react-native-community_geolocation')
+    implementation project(':react-native-permissions')
+    implementation project(':@react-native-community_netinfo')
+    implementation project(':react-native-camera')
+    implementation project(':react-native-pdf')
+    implementation project(':react-native-webview')
+    implementation 'com.android.support:multidex:1.0.3'
+
+    implementation project(":react-native-interactable")
+    implementation project(':react-native-share')
+    implementation project(':react-native-quick-actions')
+    implementation project(':react-native-passkit-wallet')
+    implementation project(':react-native-fast-image')
+    implementation project(':react-native-image-picker')
+    implementation project(':react-native-fs')
+    implementation project(':react-native-contacts')
+    implementation project(':react-native-document-picker')
+    implementation project(':jail-monkey')
+    implementation project(':react-native-gesture-handler')
+    implementation project(':react-native-vector-icons')
+    implementation(project(':react-native-maps'))
+    implementation project(':react-native-svg')
+    implementation project(':react-native-device-info')
+    implementation project(':react-native-navigation')
+
+    /*
+    implementation project(":react-native-hms-location")
+    implementation project(':react-native-hms-map')
+    implementation project(':react-native-hms-push')
+*/
+    implementation "com.google.android.gms:play-services-base:16.1.0"
+    implementation 'com.google.android.gms:play-services-wallet:16.0.1'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation "com.google.android.gms:play-services-gcm:17.0.0"
+    implementation 'com.google.android.gms:play-services-tapandpay:16.0.2'
+    implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
+
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.facebook.react:react-native:+'
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'com.android.support:appcompat-v7:26.0.1'
+
+    if (enableHermes) {
+        	        def hermesPath = "../../node_modules/hermes-engine/android/";
+        	        debugImplementation files(hermesPath + "hermes-debug.aar")
+        	        releaseImplementation files(hermesPath + "hermes-release.aar")
+        	    } else {
+        	        implementation jscFlavor
+        	    }
+}
+
+apply plugin: 'com.google.android.gms.strict-version-matcher-plugin'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
+apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle");
+applyNativeModulesAppBuildGradle(project)

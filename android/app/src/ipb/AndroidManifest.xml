@@ -1,0 +1,66 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <application
+        android:requestLegacyExternalStorage="true"
+        android:name="ru.ubsmobile.MainApplication"
+        android:allowBackup="false"
+        android:largeHeap="true"
+        android:label="ИПБ-онлайн"
+        android:theme="@style/AppTheme"
+        tools:replace="android:label"
+    >
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:grantUriPermissions="true"
+            android:exported="false"
+            tools:replace="android:authorities"
+            >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
+        <activity
+            android:launchMode="singleTop"
+            android:name="ru.ubsmobile.MainActivity"
+            android:screenOrientation="portrait"
+            android:label="ИПБ-онлайн"
+            tools:replace="android:label"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter android:label="ИПБ-онлайн">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="bank100000000236"
+                    android:host="me2mepull.nspk.ru"
+                    />
+                <data android:scheme="bank100000000236"
+                    android:host="sbpay"
+                    />
+                <data android:scheme="bank100000000236" android:host="qr.nspk.ru" />
+                <data android:scheme="https" android:host="qr.nspk.ru" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo_push"
+        />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/ipbColor"
+            tools:replace="android:resource"
+        />
+
+    </application>
+</manifest>

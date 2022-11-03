@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "391660194291",
+    "firebase_url": "https://unisabmobile-e504e.firebaseio.com",
+    "project_id": "unisabmobile-e504e",
+    "storage_bucket": "unisabmobile-e504e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391660194291:android:06b4f7b6186869a068aa86",
+        "android_client_info": {
+          "package_name": "ru.rsi.ubsmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "391660194291-ab95lk8o571mj2tm6lr0o7mogthaubr0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdnRaTJiDLBXeiu8of4eOa2LjWka50j-k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "391660194291-ab95lk8o571mj2tm6lr0o7mogthaubr0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "391660194291-j4d1v7uiikm38mejqgare4mtrpf3o7md.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ru.rsi.ubsmobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

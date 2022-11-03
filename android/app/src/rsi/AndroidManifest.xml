@@ -1,0 +1,41 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <application
+        android:requestLegacyExternalStorage="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:name="ru.ubsmobile.MainApplication"
+        android:allowBackup="false"
+        android:largeHeap="true"
+        android:label="Банк РСИ"
+        android:theme="@style/AppTheme"
+        tools:replace="android:label">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:grantUriPermissions="true"
+            android:exported="false"
+            tools:replace="android:authorities"
+            >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
+        <activity
+            android:launchMode="singleTop"
+            android:name="ru.ubsmobile.MainActivity"
+            android:screenOrientation="portrait"
+            android:label="Банк РСИ"
+            tools:replace="android:label"
+            android:resizeableActivity="false"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

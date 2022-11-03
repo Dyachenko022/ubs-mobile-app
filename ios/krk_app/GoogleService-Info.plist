@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>134305546509-v7kdc6ocjrp23k446q2bfn9it410ori5.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.134305546509-v7kdc6ocjrp23k446q2bfn9it410ori5</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD4mo5ON9flBM8h6FHq0Bop1WfN5mi4xno</string>
+	<key>GCM_SENDER_ID</key>
+	<string>134305546509</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>ru.krk.ubsmobile</string>
+	<key>PROJECT_ID</key>
+	<string>unisabmobilekrk</string>
+	<key>STORAGE_BUCKET</key>
+	<string>unisabmobilekrk.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:134305546509:ios:9f557a2063af097e52f044</string>
+	<key>DATABASE_URL</key>
+	<string>https://unisabmobilekrk.firebaseio.com</string>
+</dict>
+</plist>

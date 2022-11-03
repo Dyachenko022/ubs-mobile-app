@@ -1,0 +1,373 @@
+diff --git a/node_modules/react-native/Libraries/Core/ReactNativeVersion.js b/node_modules/react-native/Libraries/Core/ReactNativeVersion.js
+index 9eb2d30..78ff15c 100644
+--- a/node_modules/react-native/Libraries/Core/ReactNativeVersion.js
++++ b/node_modules/react-native/Libraries/Core/ReactNativeVersion.js
+@@ -12,6 +12,6 @@
+ exports.version = {
+   major: 0,
+   minor: 64,
+-  patch: 2,
++  patch: 3,
+   prerelease: null,
+ };
+diff --git a/node_modules/react-native/React/Base/RCTVersion.m b/node_modules/react-native/React/Base/RCTVersion.m
+index 68c1f95..3528624 100644
+--- a/node_modules/react-native/React/Base/RCTVersion.m
++++ b/node_modules/react-native/React/Base/RCTVersion.m
+@@ -23,7 +23,7 @@
+     __rnVersion = @{
+                   RCTVersionMajor: @(0),
+                   RCTVersionMinor: @(64),
+-                  RCTVersionPatch: @(2),
++                  RCTVersionPatch: @(3),
+                   RCTVersionPrerelease: [NSNull null],
+                   };
+   });
+diff --git a/node_modules/react-native/React/CoreModules/RCTAppearance.mm b/node_modules/react-native/React/CoreModules/RCTAppearance.mm
+index 820063d..1d762b6 100644
+--- a/node_modules/react-native/React/CoreModules/RCTAppearance.mm
++++ b/node_modules/react-native/React/CoreModules/RCTAppearance.mm
+@@ -89,7 +89,9 @@ - (dispatch_queue_t)methodQueue
+ 
+ RCT_EXPORT_SYNCHRONOUS_TYPED_METHOD(NSString *, getColorScheme)
+ {
+-  _currentColorScheme = RCTColorSchemePreference(nil);
++  if (_currentColorScheme == nil) {
++    _currentColorScheme = RCTColorSchemePreference(nil);
++  }
+   return _currentColorScheme;
+ }
+ 
+diff --git a/node_modules/react-native/ReactAndroid/gradle.properties b/node_modules/react-native/ReactAndroid/gradle.properties
+index d4e6297..9b5e1a2 100644
+--- a/node_modules/react-native/ReactAndroid/gradle.properties
++++ b/node_modules/react-native/ReactAndroid/gradle.properties
+@@ -1,4 +1,4 @@
+-VERSION_NAME=0.64.2
++VERSION_NAME=0.64.3
+ GROUP=com.facebook.react
+ 
+ POM_NAME=ReactNative
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/ReactActivity.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/ReactActivity.java
+index 4504a26..f7f1a53 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/ReactActivity.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/ReactActivity.java
+@@ -8,6 +8,7 @@
+ package com.facebook.react;
+ 
+ import android.content.Intent;
++import android.content.res.Configuration;
+ import android.os.Bundle;
+ import android.view.KeyEvent;
+ import androidx.annotation.Nullable;
+@@ -120,6 +121,12 @@ public abstract class ReactActivity extends AppCompatActivity
+     mDelegate.onWindowFocusChanged(hasFocus);
+   }
+ 
++  @Override
++  public void onConfigurationChanged(Configuration newConfig) {
++    super.onConfigurationChanged(newConfig);
++    mDelegate.onConfigurationChanged(newConfig);
++  }
++
+   protected final ReactNativeHost getReactNativeHost() {
+     return mDelegate.getReactNativeHost();
+   }
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/ReactActivityDelegate.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/ReactActivityDelegate.java
+index 7083f86..7ca749c 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/ReactActivityDelegate.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/ReactActivityDelegate.java
+@@ -11,6 +11,7 @@ import android.annotation.TargetApi;
+ import android.app.Activity;
+ import android.content.Context;
+ import android.content.Intent;
++import android.content.res.Configuration;
+ import android.os.Build;
+ import android.os.Bundle;
+ import android.view.KeyEvent;
+@@ -154,6 +155,12 @@ public class ReactActivityDelegate {
+     }
+   }
+ 
++  public void onConfigurationChanged(Configuration newConfig) {
++    if (getReactNativeHost().hasInstance()) {
++      getReactInstanceManager().onConfigurationChanged(getContext(), newConfig);
++    }
++  }
++
+   @TargetApi(Build.VERSION_CODES.M)
+   public void requestPermissions(
+       String[] permissions, int requestCode, PermissionListener listener) {
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/appearance/AppearanceModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/appearance/AppearanceModule.java
+index 99b7c53..ab47e66 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/appearance/AppearanceModule.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/appearance/AppearanceModule.java
+@@ -7,6 +7,7 @@
+ 
+ package com.facebook.react.modules.appearance;
+ 
++import android.app.Activity;
+ import android.content.Context;
+ import android.content.res.Configuration;
+ import androidx.annotation.Nullable;
+@@ -74,7 +75,15 @@ public class AppearanceModule extends NativeAppearanceSpec {
+ 
+   @Override
+   public String getColorScheme() {
+-    mColorScheme = colorSchemeForCurrentConfiguration(getReactApplicationContext());
++    // Attempt to use the Activity context first in order to get the most up to date
++    // scheme. This covers the scenario when AppCompatDelegate.setDefaultNightMode()
++    // is called directly (which can occur in Brownfield apps for example).
++    Activity activity = getCurrentActivity();
++
++    mColorScheme =
++        colorSchemeForCurrentConfiguration(
++            activity != null ? activity : getReactApplicationContext());
++
+     return mColorScheme;
+   }
+ 
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/ReactNativeVersion.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/ReactNativeVersion.java
+index 2c34611..2231c9a 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/ReactNativeVersion.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/ReactNativeVersion.java
+@@ -17,6 +17,6 @@ public class ReactNativeVersion {
+   public static final Map<String, Object> VERSION = MapBuilder.<String, Object>of(
+       "major", 0,
+       "minor", 64,
+-      "patch", 2,
++      "patch", 3,
+       "prerelease", null);
+ }
+diff --git a/node_modules/react-native/ReactAndroid/src/main/jni/first-party/fbjni/.npmignore b/node_modules/react-native/ReactAndroid/src/main/jni/first-party/fbjni/.gitignore
+similarity index 100%
+rename from node_modules/react-native/ReactAndroid/src/main/jni/first-party/fbjni/.npmignore
+rename to node_modules/react-native/ReactAndroid/src/main/jni/first-party/fbjni/.gitignore
+diff --git a/node_modules/react-native/ReactCommon/cxxreact/ReactNativeVersion.h b/node_modules/react-native/ReactCommon/cxxreact/ReactNativeVersion.h
+index 85449c0..70496c0 100644
+--- a/node_modules/react-native/ReactCommon/cxxreact/ReactNativeVersion.h
++++ b/node_modules/react-native/ReactCommon/cxxreact/ReactNativeVersion.h
+@@ -17,7 +17,7 @@ namespace facebook::react {
+ constexpr struct {
+   int32_t Major = 0;
+   int32_t Minor = 64;
+-  int32_t Patch = 2;
++  int32_t Patch = 3;
+   std::string_view Prerelease = "";
+ } ReactNativeVersion;
+ 
+diff --git a/node_modules/react-native/ReactCommon/hermes/inspector/tools/msggen/.npmignore b/node_modules/react-native/ReactCommon/hermes/inspector/tools/msggen/.gitignore
+similarity index 100%
+rename from node_modules/react-native/ReactCommon/hermes/inspector/tools/msggen/.npmignore
+rename to node_modules/react-native/ReactCommon/hermes/inspector/tools/msggen/.gitignore
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-javadoc.jar.md5 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-javadoc.jar.md5
+deleted file mode 100644
+index 5c44465..0000000
+--- a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-javadoc.jar.md5
++++ /dev/null
+@@ -1 +0,0 @@
+-e8a3a3f036a7a55542771d47423f418a
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-javadoc.jar.sha1 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-javadoc.jar.sha1
+deleted file mode 100644
+index 431546b..0000000
+--- a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-javadoc.jar.sha1
++++ /dev/null
+@@ -1 +0,0 @@
+-9a9a2a82e3c0ccab2be64811dbcf410daaad0606
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-sources.jar.md5 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-sources.jar.md5
+deleted file mode 100644
+index 96587f1..0000000
+--- a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-sources.jar.md5
++++ /dev/null
+@@ -1 +0,0 @@
+-800c212ea74543460073cf215e14ecc1
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-sources.jar.sha1 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-sources.jar.sha1
+deleted file mode 100644
+index 5f32758..0000000
+--- a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-sources.jar.sha1
++++ /dev/null
+@@ -1 +0,0 @@
+-e7cc76356f65928f018b08474ee2d7531da0c6a7
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.aar.md5 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.aar.md5
+deleted file mode 100644
+index 241fad8..0000000
+--- a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.aar.md5
++++ /dev/null
+@@ -1 +0,0 @@
+-a1f4484c294eb3e3e436da5edee9c0c5
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.aar.sha1 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.aar.sha1
+deleted file mode 100644
+index 0cdea4c..0000000
+--- a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.aar.sha1
++++ /dev/null
+@@ -1 +0,0 @@
+-01a1fcfa725f135acc21e96ed71ff432b1fc553f
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.pom.md5 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.pom.md5
+deleted file mode 100644
+index 690fc25..0000000
+--- a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.pom.md5
++++ /dev/null
+@@ -1 +0,0 @@
+-389f95f84193a6364d9a78816107b307
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.pom.sha1 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.pom.sha1
+deleted file mode 100644
+index e32ca3d..0000000
+--- a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.pom.sha1
++++ /dev/null
+@@ -1 +0,0 @@
+-48fcceb199d9f1fa6010c5e9e54d824cb21ce869
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-javadoc.jar b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-javadoc.jar
+similarity index 55%
+rename from node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-javadoc.jar
+rename to node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-javadoc.jar
+index 5158494..ebbd430 100644
+Binary files a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-javadoc.jar and b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-javadoc.jar differ
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-javadoc.jar.md5 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-javadoc.jar.md5
+new file mode 100644
+index 0000000..3e34719
+--- /dev/null
++++ b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-javadoc.jar.md5
+@@ -0,0 +1 @@
++72d6a6b364bfe42709f701c11690b4d3
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-javadoc.jar.sha1 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-javadoc.jar.sha1
+new file mode 100644
+index 0000000..4709397
+--- /dev/null
++++ b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-javadoc.jar.sha1
+@@ -0,0 +1 @@
++642a7df62ed900cf62f369776e512575f9d38158
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-sources.jar b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-sources.jar
+similarity index 88%
+rename from node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-sources.jar
+rename to node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-sources.jar
+index 11db8e9..5281662 100644
+Binary files a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2-sources.jar and b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-sources.jar differ
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-sources.jar.md5 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-sources.jar.md5
+new file mode 100644
+index 0000000..634c349
+--- /dev/null
++++ b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-sources.jar.md5
+@@ -0,0 +1 @@
++5e29dde11cfa8efa02db8824bb240067
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-sources.jar.sha1 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-sources.jar.sha1
+new file mode 100644
+index 0000000..3c7dbd0
+--- /dev/null
++++ b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3-sources.jar.sha1
+@@ -0,0 +1 @@
++db3abca58136782da3a093c5b9eaa625be5637bd
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.aar b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.aar
+similarity index 91%
+rename from node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.aar
+rename to node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.aar
+index b64ac27..86322fc 100644
+Binary files a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.aar and b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.aar differ
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.aar.md5 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.aar.md5
+new file mode 100644
+index 0000000..9a1aa15
+--- /dev/null
++++ b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.aar.md5
+@@ -0,0 +1 @@
++9250c1f87e25c2824138f039450d9b17
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.aar.sha1 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.aar.sha1
+new file mode 100644
+index 0000000..08f45d9
+--- /dev/null
++++ b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.aar.sha1
+@@ -0,0 +1 @@
++654ef2ffdf7482e57c8699b3a0f8217d4050e581
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.pom b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.pom
+similarity index 99%
+rename from node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.pom
+rename to node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.pom
+index 061798b..2237ba2 100644
+--- a/node_modules/react-native/android/com/facebook/react/react-native/0.64.2/react-native-0.64.2.pom
++++ b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.pom
+@@ -4,7 +4,7 @@
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>com.facebook.react</groupId>
+   <artifactId>react-native</artifactId>
+-  <version>0.64.2</version>
++  <version>0.64.3</version>
+   <packaging>aar</packaging>
+   <name>ReactNative</name>
+   <description>A framework for building native apps with React</description>
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.pom.md5 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.pom.md5
+new file mode 100644
+index 0000000..d8750fa
+--- /dev/null
++++ b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.pom.md5
+@@ -0,0 +1 @@
++83a7a81248847a9b98c3158d74119496
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.pom.sha1 b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.pom.sha1
+new file mode 100644
+index 0000000..1b6e3a6
+--- /dev/null
++++ b/node_modules/react-native/android/com/facebook/react/react-native/0.64.3/react-native-0.64.3.pom.sha1
+@@ -0,0 +1 @@
++2e42f2fe647d72ab193cb92ea94b5ac9ea258bd0
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/maven-metadata.xml b/node_modules/react-native/android/com/facebook/react/react-native/maven-metadata.xml
+index 63096fa..4a90888 100644
+--- a/node_modules/react-native/android/com/facebook/react/react-native/maven-metadata.xml
++++ b/node_modules/react-native/android/com/facebook/react/react-native/maven-metadata.xml
+@@ -3,10 +3,10 @@
+   <groupId>com.facebook.react</groupId>
+   <artifactId>react-native</artifactId>
+   <versioning>
+-    <release>0.64.2</release>
++    <release>0.64.3</release>
+     <versions>
+-      <version>0.64.2</version>
++      <version>0.64.3</version>
+     </versions>
+-    <lastUpdated>20210603172949</lastUpdated>
++    <lastUpdated>20211104212221</lastUpdated>
+   </versioning>
+ </metadata>
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/maven-metadata.xml.md5 b/node_modules/react-native/android/com/facebook/react/react-native/maven-metadata.xml.md5
+index f8bf1ea..39a995f 100644
+--- a/node_modules/react-native/android/com/facebook/react/react-native/maven-metadata.xml.md5
++++ b/node_modules/react-native/android/com/facebook/react/react-native/maven-metadata.xml.md5
+@@ -1 +1 @@
+-bbff08476171883317414c491685e186
+\ No newline at end of file
++e293d1fe02f2adb7a9e27084ab808332
+\ No newline at end of file
+diff --git a/node_modules/react-native/android/com/facebook/react/react-native/maven-metadata.xml.sha1 b/node_modules/react-native/android/com/facebook/react/react-native/maven-metadata.xml.sha1
+index ef029ee..352a851 100644
+--- a/node_modules/react-native/android/com/facebook/react/react-native/maven-metadata.xml.sha1
++++ b/node_modules/react-native/android/com/facebook/react/react-native/maven-metadata.xml.sha1
+@@ -1 +1 @@
+-9cd18d3514fed67424012c4c3b34b3e533a63c7a
+\ No newline at end of file
++986a21d91084f453cc9a13e853a9bbb8c362fd72
+\ No newline at end of file
+diff --git a/node_modules/react-native/template/package.json b/node_modules/react-native/template/package.json
+index 0108163..af90e8e 100644
+--- a/node_modules/react-native/template/package.json
++++ b/node_modules/react-native/template/package.json
+@@ -11,7 +11,7 @@
+   },
+   "dependencies": {
+     "react": "17.0.1",
+-    "react-native": "0.64.2"
++    "react-native": "0.64.3"
+   },
+   "devDependencies": {
+     "@babel/core": "^7.12.9",

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>391660194291-j4d1v7uiikm38mejqgare4mtrpf3o7md.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.391660194291-j4d1v7uiikm38mejqgare4mtrpf3o7md</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCsDqYYswpXrvZPGx_597fiejzeQq798nM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>391660194291</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>ru.rsi.ubsmobile</string>
+	<key>PROJECT_ID</key>
+	<string>unisabmobile-e504e</string>
+	<key>STORAGE_BUCKET</key>
+	<string>unisabmobile-e504e.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:391660194291:ios:4f3d2de0a1fd32a368aa86</string>
+	<key>DATABASE_URL</key>
+	<string>https://unisabmobile-e504e.firebaseio.com</string>
+</dict>
+</plist>

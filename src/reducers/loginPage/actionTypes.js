@@ -1,0 +1,1 @@
+export const SET_CREDENTIALS = 'app.SET_CREDENTIALS';

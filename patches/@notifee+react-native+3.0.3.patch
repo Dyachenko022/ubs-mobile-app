@@ -1,0 +1,13 @@
+diff --git a/node_modules/@notifee/react-native/android/build.gradle b/node_modules/@notifee/react-native/android/build.gradle
+index 612b922..493cf24 100644
+--- a/node_modules/@notifee/react-native/android/build.gradle
++++ b/node_modules/@notifee/react-native/android/build.gradle
+@@ -18,8 +18,6 @@ plugins {
+   id "io.invertase.gradle.build" version "1.5"
+ }
+ 
+-project.evaluationDependsOn(':app')
+-
+ project.ext {
+   set('react-native', [
+     versions: [

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "134305546509",
+    "firebase_url": "https://unisabmobilekrk.firebaseio.com",
+    "project_id": "unisabmobilekrk",
+    "storage_bucket": "unisabmobilekrk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134305546509:android:f1395748f67320ae52f044",
+        "android_client_info": {
+          "package_name": "ru.krk.ubsmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134305546509-c0rkfb6ifdfisibi6gifleu7i87nasb3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCba0lZfAhl98sbTnek1-R8YiyijovYuXg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134305546509-c0rkfb6ifdfisibi6gifleu7i87nasb3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

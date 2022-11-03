@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "143816078858",
+    "firebase_url": "https://elitaonline.firebaseio.com",
+    "project_id": "elitaonline",
+    "storage_bucket": "elitaonline.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143816078858:android:14eb96506356a8ad5a91f3",
+        "android_client_info": {
+          "package_name": "ru.elt.ubsmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143816078858-b166p7pqbc2tr44fo6pn1em03ml83ivh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKNDLh4qlQIlklIUM0YxyJvDb1p5yqCVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "143816078858-b166p7pqbc2tr44fo6pn1em03ml83ivh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

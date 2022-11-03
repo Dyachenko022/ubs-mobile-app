@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "612598977499",
+    "project_id": "rurubonline",
+    "storage_bucket": "rurubonline.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612598977499:android:6f66e7b0e2bafe5564cdfe",
+        "android_client_info": {
+          "package_name": "ru.rubank.ubsmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "612598977499-umhlonpirhq70hr64q1j36l5pd7m94u2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVTq4HmS_wQXdP7hxh7dksNsdvCkISjDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "612598977499-umhlonpirhq70hr64q1j36l5pd7m94u2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "612598977499-jeltskpphteapp3hccmumaoclvlqto0i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ru.rubank.ubsmobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
