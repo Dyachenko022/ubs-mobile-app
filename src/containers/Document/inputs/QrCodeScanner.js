@@ -1,11 +1,23 @@
 import React from 'react';
-import {  StyleSheet, SafeAreaView, Alert, Text , Button, Dimensions, View} from 'react-native';
+import { StyleSheet, SafeAreaView, Alert, Text , Button, Dimensions, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import * as ImagePicker from "react-native-image-picker"
+import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
+import RNQRGenerator from 'rn-qr-generator';
 import { RNCamera } from 'react-native-camera';
 
 //Сканирует только один раз. Для повторного сканирование нужно вызывать
 //this.scanner.reactivate() или перемонтировать компонент
 export default class ScanScreen extends React.PureComponent {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      useFlash: false,
+      processingQR: false,
+    }
+  }
 
   isMounted = false;
 
@@ -27,10 +39,55 @@ export default class ScanScreen extends React.PureComponent {
     }
   };
 
+  // Выбор фотографии из галереи
+  fetchGalleryImage = async () => {
+    const options = {
+      title: 'Выбор QR-кода',
+      cancelButtonTitle: 'Отмена',
+      allowsEditing: false,
+      storageOptions: {
+        skipBackup: true,
+        waitUntilSaved: true
+      },
+      mediaType: 'photo',
+      includeBase64: true,
+      quality: 0.25
+    };
+
+    let cameraPermission = await check(PERMISSIONS.IOS.CAMERA);
+    if (cameraPermission === RESULTS.DENIED) cameraPermission = await request(PERMISSIONS.IOS.CAMERA);
+    if (cameraPermission === RESULTS.BLOCKED) {
+      Alert.alert('Доступ к камере запрещен! Разрешите доступ к камере в настройках.');
+    } else {
+      ImagePicker.launchImageLibrary(options, response => {
+        if(!response.base64) {
+          return;
+        }
+        this.setState({ processingQR: true})
+
+        RNQRGenerator.detect({
+          base64: response.base64,
+        }).then((detectedQRCodes) => {
+          const { values } = detectedQRCodes;
+
+          if(values && values.length > 0) {
+            this.onSuccess({data: values[0]})
+          } else {
+            Alert.alert('Не найден QR код')
+          }
+
+          this.setState({ processingQR: false})
+        }).catch(error => {
+          console.log(error)
+          Alert.alert('Ошибка', 'Ошибка обработки QR кода')
+        })
+      });
+    }
+  }
+
   render() {
     return (
       <SafeAreaView style={{ width: '100%', height: '100%', backgroundColor: 'white', alignItems: 'center'}}
-        pointerEvents="none"
       >
           <QRCodeScanner
             reactivateTimeout={5000}
@@ -46,7 +103,9 @@ export default class ScanScreen extends React.PureComponent {
               height: Dimensions.get('window').height,
             }}
             onRead={this.onSuccess}
-            flashMode={RNCamera.Constants.FlashMode.off}
+            flashMode={this.state.useFlash 
+                       ? RNCamera.Constants.FlashMode.torch
+                       : RNCamera.Constants.FlashMode.off}
           />
         { /* Чтобы кнопка работала, нужно убрать pointerEvents=none */ }
         {__DEV__ &&
@@ -55,9 +114,35 @@ export default class ScanScreen extends React.PureComponent {
           />
         }
 
-          <Text style={{textAlign:'center', top: '85%', zIndex: 200, position: 'absolute', fontSize: 18, color: '#f5f5f0'}}>
-            {'Наведите камеру на QR-код с квитанции\r\nПриложение автоматически отсканирует код'}
-          </Text>
+        <TouchableOpacity style={styles.flashIconTouchableStyle}
+                          onPress={() => {
+                            this.setState({ useFlash: !this.state.useFlash })
+                          }}>
+          <Icon name={this.state.useFlash ? 'flash-on' : 'flash-off'}
+                size={25}
+                color={'#fff'} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.galleryIconTouchableStyle}
+                          onPress={() => this.fetchGalleryImage()}>
+          <Icon name={'image'}
+                size={25}
+                color={'#fff'} />
+        </TouchableOpacity>
+
+        <Text style={{textAlign:'center', 
+                      top: '85%', 
+                      zIndex: 200, 
+                      position: 'absolute', 
+                      fontSize: 18, 
+                      color: '#f5f5f0'}}>
+          {'Наведите камеру на QR-код с квитанции\r\nПриложение автоматически отсканирует код'}
+        </Text>
+
+        {this.state.processingQR && (
+          <View style={styles.fullScreenWrapper}>
+            <ActivityIndicator style={{width: 30, height: 30, color: '#000'}} />
+          </View>
+        )}
       </SafeAreaView>
     );
   }
@@ -80,5 +165,37 @@ const styles = StyleSheet.create({
   },
   buttonTouchable: {
     padding: 16
+  },
+  flashIconTouchableStyle: { 
+    bottom: 50,
+    right: 20, 
+    borderRadius: 30,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    width: 45,
+    height: 45,
+    alignItems:'center',
+    justifyContent: 'center',
+    zIndex: 250, 
+    position: 'absolute'
+  },
+  galleryIconTouchableStyle: { 
+    bottom: 50,
+    left: 20, 
+    borderRadius: 30,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    width: 45,
+    height: 45,
+    alignItems:'center',
+    justifyContent: 'center',
+    zIndex: 250, 
+    position: 'absolute'
+  },
+  fullScreenWrapper: {
+    position: 'absolute',
+    alignItems:'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    zIndex: 1000,
   }
 });
