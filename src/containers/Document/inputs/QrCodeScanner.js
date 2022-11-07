@@ -114,29 +114,38 @@ export default class ScanScreen extends React.PureComponent {
           />
         }
 
-        <TouchableOpacity style={styles.flashIconTouchableStyle}
+        <View style={{textAlign:'center', 
+                      bottom: 30, 
+                      zIndex: 200, 
+                      position: 'absolute'}}>
+          <Text style={{textAlign:'center', 
+                        fontSize: 18, 
+                        color: '#f5f5f0'}}>
+            {'Наведите камеру на QR-код с квитанции\r\nПриложение автоматически отсканирует код'}
+          </Text>
+
+          <View style={{flexDirection: 'row',
+                        padding: 10,
+                        alignItems:'center',
+                        justifyContent: 'space-between'}}>
+            
+            <TouchableOpacity style={styles.iconButtonStyle}
+                              onPress={() => this.fetchGalleryImage()}>
+              <Icon name={'image'}
+                    size={25}
+                    color={'#fff'} />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.iconButtonStyle}
                           onPress={() => {
                             this.setState({ useFlash: !this.state.useFlash })
                           }}>
-          <Icon name={this.state.useFlash ? 'flash-on' : 'flash-off'}
-                size={25}
-                color={'#fff'} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.galleryIconTouchableStyle}
-                          onPress={() => this.fetchGalleryImage()}>
-          <Icon name={'image'}
-                size={25}
-                color={'#fff'} />
-        </TouchableOpacity>
-
-        <Text style={{textAlign:'center', 
-                      top: '85%', 
-                      zIndex: 200, 
-                      position: 'absolute', 
-                      fontSize: 18, 
-                      color: '#f5f5f0'}}>
-          {'Наведите камеру на QR-код с квитанции\r\nПриложение автоматически отсканирует код'}
-        </Text>
+              <Icon name={this.state.useFlash ? 'flash-on' : 'flash-off'}
+                    size={25}
+                    color={'#fff'} />
+            </TouchableOpacity>
+          </View>
+        </View>
 
         {this.state.processingQR && (
           <View style={styles.fullScreenWrapper}>
@@ -166,30 +175,6 @@ const styles = StyleSheet.create({
   buttonTouchable: {
     padding: 16
   },
-  flashIconTouchableStyle: { 
-    bottom: 50,
-    right: 20, 
-    borderRadius: 30,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    width: 45,
-    height: 45,
-    alignItems:'center',
-    justifyContent: 'center',
-    zIndex: 250, 
-    position: 'absolute'
-  },
-  galleryIconTouchableStyle: { 
-    bottom: 50,
-    left: 20, 
-    borderRadius: 30,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    width: 45,
-    height: 45,
-    alignItems:'center',
-    justifyContent: 'center',
-    zIndex: 250, 
-    position: 'absolute'
-  },
   fullScreenWrapper: {
     position: 'absolute',
     alignItems:'center',
@@ -197,5 +182,13 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     zIndex: 1000,
+  },
+  iconButtonStyle: {
+    width: 45,
+    height: 45,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
   }
 });
