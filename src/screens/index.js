@@ -74,6 +74,7 @@ import SbpAcceptancesScreen from './SbpAcceptancesScreen';
 import ContractDataErrorModal from './MyBankTabScreen/ContractDataErrorModal';
 import IconExitUser from '../components/CustomTopBarRightIcons/IconExitUser';
 import SBPayScreen from './SBPayScreen';
+import SpbSubscriptionsScreen from './SpbSubscriptionsScreen/SpbSubscriptionsScreen';
 
 function reduxStoreWrapper (MyComponent, store, Provider) {
   return  (props = {}) => {
@@ -162,4 +163,6 @@ export function registerScreens(store, Provider) {
   Navigation.registerComponent('unisab/contractDataErrorModal', () => reduxStoreWrapper(ContractDataErrorModal, store, Provider), () => ContractDataErrorModal);
   //Navigation.registerComponent('unisab/LimitsScreen', () => reduxStoreWrapper(LimitsScreen, store, Provider));
   Navigation.registerComponentWithRedux('unisab/LimitsScreen', () => LimitsScreen, Provider, store);
+
+  Navigation.registerComponentWithRedux('unisab/SpbSubscriptionsScreen', () => SpbSubscriptionsScreen, Provider, store)
 }

@@ -264,6 +264,14 @@ export default class SettingsScreen extends React.Component {
           />
         }
 
+        {this.props.confAccess['UBS_SBP_SUBSCR_CHANGE'] !== undefined &&
+          <PressableWithArrow 
+            onPress={this.props.openSBPSubscriptionsScreen}
+            text='Подписки СБП'
+            description='Управление подписками СБП'
+          />
+        }
+
       {BankTheme.pushNotificationsUsed && (
         <View style={styles.section}>
           <View style={styles.sectionHeaderWrapper}>

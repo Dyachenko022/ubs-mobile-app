@@ -27,6 +27,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         }
       )
     },
+    openSBPSubscriptionsScreen: () => {
+      pushScreen({
+        componentId,
+        screenName: 'unisab/SpbSubscriptionsScreen',
+        title: 'СПБ Подписки'
+      })
+    },
     pushON: async () => {
       let token = '';
       let tokenType = '';
