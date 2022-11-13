@@ -48,7 +48,7 @@ export default styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 75
+    width: 90
   },
   swipeableItemContainer: {
     borderTopWidth: 1,

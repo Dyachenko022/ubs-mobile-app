@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import { View,  AsyncStorage, TouchableOpacity, Text, SafeAreaView, Image, FlatList, Alert, ActivityIndicator, RefreshControl } from 'react-native';
-import Swipeable from 'react-native-swipeable';
 
 import SbpLogo from '../../../assets/icons/logo-sbp.png';
 import LeftSwipeIcon from '../../../assets/icons/leftSwipe.png';
 
+import SwipeOut from '../../components/SwipeOut';
+
+import { appColors } from '../../utils/colors';
 import moment from 'moment';
 
 import { pushScreen } from '../../utils/navigationUtils';
@@ -56,7 +58,7 @@ const SbpSubsctiptionsScreen = (props) => {
   const ListItem = ({item}) => {
     const rightButtons = [
       item.state === 0 &&
-      <TouchableOpacity style={[styles.itemRightButtonStyle, {backgroundColor: '#ffce7a'}]}
+      <TouchableOpacity style={[styles.itemRightButtonStyle, {backgroundColor: appColors.yellow}]}
                         onPress={() => {
                           pushScreen({
                             componentId: props.componentId,
@@ -77,7 +79,7 @@ const SbpSubsctiptionsScreen = (props) => {
         </Text>
       </TouchableOpacity>,
 
-      <TouchableOpacity style={[styles.itemRightButtonStyle, {backgroundColor: '#f74639'}]}
+      <TouchableOpacity style={[styles.itemRightButtonStyle, {backgroundColor: appColors.red}]}
                         onPress={() => {
                           pushScreen({
                             componentId: props.componentId,
@@ -99,8 +101,9 @@ const SbpSubsctiptionsScreen = (props) => {
       </TouchableOpacity>
     ]
     return (
-      <Swipeable rightButtons={rightButtons} 
-                 style={styles.swipeableItemContainer}>
+      <SwipeOut rightButtons={rightButtons} 
+                buttonsWidth={90}
+                style={styles.swipeableItemContainer}>
         <View style={{padding: 10}}>
           <Text style={styles.headerText}>{item.account}</Text>
           
@@ -112,7 +115,7 @@ const SbpSubsctiptionsScreen = (props) => {
             {item.note}
           </Text>
         </View>
-      </Swipeable>
+      </SwipeOut>
     )
   }
 
