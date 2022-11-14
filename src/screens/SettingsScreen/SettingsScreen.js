@@ -264,7 +264,7 @@ export default class SettingsScreen extends React.Component {
           />
         }
 
-        {this.props.confAccess['UBS_SBP_SUBSCR_CHANGE'] !== undefined &&
+        {this.props.confAccess['UBS_SBP_SUBSCR_CHANGE']?.access > 0 &&
           <PressableWithArrow 
             onPress={this.props.openSBPSubscriptionsScreen}
             text='Подписки СБП'

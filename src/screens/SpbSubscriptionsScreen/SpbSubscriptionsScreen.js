@@ -24,6 +24,8 @@ const SbpSubsctiptionsScreen = (props) => {
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const swipeableRefs = useRef([]);
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchSubscriptions().then(response => {
@@ -53,6 +55,18 @@ const SbpSubsctiptionsScreen = (props) => {
       console.log(error)
       Alert.alert('Ошибка', error.textResult)
     }
+  }
+
+  const recenterSwipeable = (id = null ) => {
+    if ( id === null ) {
+      swipeableRefs.current.map(item => {
+        item.recenter();
+      })
+    } else [
+      swipeableRefs.current.map((item, index) => {
+        index !== id && item.recenter();
+      })
+    ]
   }
 
   const ListItem = ({item}) => {
@@ -103,7 +117,12 @@ const SbpSubsctiptionsScreen = (props) => {
     return (
       <SwipeOut rightButtons={rightButtons} 
                 buttonsWidth={90}
-                style={styles.swipeableItemContainer}>
+                style={styles.swipeableItemContainer}
+                onSwipeStart={(id) => recenterSwipeable(id)}
+                onRef={(ref) => {
+                  swipeableRefs.current.push(ref)
+                  return swipeableRefs.current.length - 1;
+                }}>
         <View style={{padding: 10}}>
           <Text style={styles.headerText}>{item.account}</Text>
           
@@ -153,6 +172,7 @@ const SbpSubsctiptionsScreen = (props) => {
             )
           }}
           renderItem={ListItem}
+          onScrollBeginDrag={() => recenterSwipeable()}
           data={subscriptions}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} />
         </View>
