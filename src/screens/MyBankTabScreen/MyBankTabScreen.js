@@ -65,6 +65,19 @@ export default class MyBankScreen extends React.Component {
           }
         });
     }
+
+    if (BankTheme.showHeaderQrButton) { 
+      rightButtons.push(
+        {
+          id: 'mybank_QRCode',
+          component: {
+            name: 'IconQRCode',
+            passProps: {
+              parentComponentId: props.componentId,
+            }
+          }
+        });
+    }
     if (BankTheme.pushNotificationsUsed) {
       rightButtons.push(
         {

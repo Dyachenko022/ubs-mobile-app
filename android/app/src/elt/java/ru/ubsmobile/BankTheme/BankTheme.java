@@ -76,6 +76,9 @@ public class BankTheme extends BankThemeBase {
     protected boolean PushNotificationsUsed() { return false; }
 
     @Override
+    protected boolean ShowQrCodeIcon() { return true; }
+
+    @Override
     protected boolean BankMessagesUsed() { return true; }
 
 }

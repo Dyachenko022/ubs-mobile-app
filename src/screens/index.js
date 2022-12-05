@@ -67,6 +67,7 @@ import NotificationsScreen from './NotificationsScreen';
 import WebViewModalConfirmation from '../components/WebViewModalConfirmation';
 import TextBoxFind from "../components/Inputs/TextBoxFind";
 import IconPersonalOffers from '../components/CustomTopBarRightIcons/IconPersonalOffers';
+import IconQRCode from '../components/CustomTopBarRightIcons/IconQRCode';
 import IconNotifications from '../components/CustomTopBarRightIcons/IconNotifications';
 import ModalSetLimit from './LimitsScreen/components/ModalSetLimit';
 import LimitsScreen from './LimitsScreen';
@@ -156,6 +157,7 @@ export function registerScreens(store, Provider) {
   //Components
   Navigation.registerComponentWithRedux('TextBoxFind', () => TextBoxFind, Provider, store);
   Navigation.registerComponent('IconPersonalOffers', () => reduxStoreWrapper(IconPersonalOffers, store, Provider), () => IconPersonalOffers);
+  Navigation.registerComponent('IconQRCode', () => reduxStoreWrapper(IconQRCode, store, Provider), () => IconQRCode);
   Navigation.registerComponent('IconNotifications', () => reduxStoreWrapper(IconNotifications, store, Provider), () => IconNotifications);
   Navigation.registerComponent('IconExitUser', () => reduxStoreWrapper(IconExitUser, store, Provider), () => IconNotifications);
   Navigation.registerComponent('WebViewModalConfirmation', () => WebViewModalConfirmation);

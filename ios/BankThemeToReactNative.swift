@@ -33,6 +33,7 @@ internal class BankThemeToReactNative: BankTheme {
       "serverUrl": ServerUrl,
       "navigationBackgroundColor" : self.navigationBackgroundColor,
       "statusBarTheme": self.statusBarTheme,
+      "showQrCodeIcon": self.showQrCodeIcon,
       "defaultMapLocation": self.defaultMapLocation.nsDictionary,
       "showNotificationsSetting": self.showNotificationsSetting,
       "allowShowCvvCode": self.allowShowCvvCode,

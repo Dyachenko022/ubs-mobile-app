@@ -5,6 +5,7 @@ public class BankTheme: NSObject, BankThemeBase {
   public var serverUrl: String = "https://online.crocusbank.ru'";
   public var udSuiteName: String = "krk";
   public var allowShowCvvCode = false
+  public var showQrCodeIcon = false;
   public var showNotificationsSetting = true
   public var showBonusesPage: Bool = false
   public var statusBarTheme: String = "light"

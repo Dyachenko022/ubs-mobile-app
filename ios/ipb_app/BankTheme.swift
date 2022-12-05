@@ -5,6 +5,7 @@ public class BankTheme: NSObject, BankThemeBase {
   public var udSuiteName: String = "group.ipb.notificationsService";
   public var showNotificationsSetting = true
   public var showBonusesPage: Bool = true
+  public var showQrCodeIcon = false;
   public var statusBarTheme: String = "light"
   public var navigationBackgroundColor: String = "#f47321"
   public var allowAddCardsToWallet = true;

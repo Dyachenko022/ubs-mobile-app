@@ -45,6 +45,7 @@ const BankTheme = {
   codeSettingPageTheme,
   bankPhoneNumber: nativeBankTheme.bankPhoneNumber,
   allowShowCvvCode: nativeBankTheme.allowShowCvvCode,
+  showHeaderQrButton: nativeBankTheme.showQrCodeIcon || false,
   showBonusesPage: nativeBankTheme.showBonusesPage || false,
   showNotificationsSetting: nativeBankTheme.showNotificationsSetting || false,
   allowAddCardsToWallet: nativeBankTheme.allowAddCardsToWallet || false,

@@ -84,6 +84,9 @@ public class BankTheme extends BankThemeBase {
     }
 
     @Override
+    protected boolean ShowQrCodeIcon() { return false; }
+
+    @Override
     protected boolean BankMessagesUsed() {
         return false;
     }

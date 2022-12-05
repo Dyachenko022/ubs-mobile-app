@@ -4,6 +4,7 @@ public class BankTheme: NSObject, BankThemeBase {
   public var udSuiteName: String = "group.rsi.notificationsService"
   public var serverUrl: String = "https://ib.bankrsi.ru:5555";
   public var allowShowCvvCode = false
+  public var showQrCodeIcon = false
   public var showNotificationsSetting = false
   public var showBonusesPage: Bool = false
   public var statusBarTheme: String = "light"

@@ -3,6 +3,7 @@ public class BankTheme: NSObject, BankThemeBase {
   public var color1: String = "#0970cd";
   public var serverUrl: String = "https://212.48.39.11:11443";
   public var showNotificationsSetting = false
+  public var showQrCodeIcon = false
   public var showBonusesPage: Bool = false
   public var statusBarTheme: String = "light"
   public var navigationBackgroundColor: String = "#0970cd"

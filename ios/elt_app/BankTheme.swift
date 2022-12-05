@@ -4,6 +4,7 @@ public class BankTheme: NSObject, BankThemeBase {
   public var serverUrl: String = "https://dbo.bankelita.ru:444";
   public var udSuiteName: String = "elt";
   public var allowShowCvvCode = false;
+  public var showQrCodeIcon = true;
   public var showNotificationsSetting = true
   public var showBonusesPage: Bool = false
   public var statusBarTheme: String = "light"

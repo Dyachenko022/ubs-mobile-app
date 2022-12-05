@@ -439,13 +439,13 @@ PODS:
     - React-cxxreact (= 0.64.3)
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
-  - ReactNativeNavigation (7.29.1):
+  - ReactNativeNavigation (7.30.0):
     - HMSegmentedControl
     - React-Core
     - React-RCTImage
     - React-RCTText
-    - ReactNativeNavigation/Core (= 7.29.1)
-  - ReactNativeNavigation/Core (7.29.1):
+    - ReactNativeNavigation/Core (= 7.30.0)
+  - ReactNativeNavigation/Core (7.30.0):
     - HMSegmentedControl
     - React-Core
     - React-RCTImage
@@ -480,6 +480,9 @@ PODS:
     - React-Core
   - RNPermissions (2.2.2):
     - React-Core
+  - RNQrGenerator (1.2.1):
+    - React
+    - ZXingObjC
   - RNQuickAction (0.3.13):
     - React
   - RNReanimated (1.13.4):
@@ -497,6 +500,9 @@ PODS:
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
+  - ZXingObjC (3.6.5):
+    - ZXingObjC/All (= 3.6.5)
+  - ZXingObjC/All (3.6.5)
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -583,6 +589,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
+  - RNQrGenerator (from `../node_modules/rn-qr-generator`)
   - RNQuickAction (from `../node_modules/react-native-quick-actions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNShare (from `../node_modules/react-native-share`)
@@ -616,6 +623,7 @@ SPEC REPOS:
     - PromisesObjC
     - SDWebImage
     - YogaKit
+    - ZXingObjC
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -744,6 +752,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@notifee/react-native"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
+  RNQrGenerator:
+    :path: "../node_modules/rn-qr-generator"
   RNQuickAction:
     :path: "../node_modules/react-native-quick-actions"
   RNReanimated:
@@ -830,7 +840,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: c7f845861e79eae13dc1e8217a3cf47a3945b504
   React-runtimeexecutor: 493d9abb8b23c3f84e19ae221eeba92cadcb70dc
   ReactCommon: 8fea6422328e2fc093e25c9fac67adbcf0f04fb4
-  ReactNativeNavigation: f1c5b86f993758d0af2942ba9058a340166bef07
+  ReactNativeNavigation: 5e054355a4b62afb4b9895d516124205b1b8aea6
   ReactNativeUiLib: cde7263a7d308b60161cd286f95c9433e79f2f7d
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCPicker: 914b557e20b3b8317b084aca9ff4b4edb95f61e4
@@ -843,6 +853,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNNotifee: c1d164933c68654e1fb2c843118506751ad4578c
   RNPermissions: 5df468064df661a4c8c017e2791ce90d7695eea5
+  RNQrGenerator: 0aa6c40e3f2e15a9cbaec9480b7028c339f89b66
   RNQuickAction: 6d404a869dc872cde841ad3147416a670d13fa93
   RNReanimated: c1b56d030d1616239861534d9adb531f8cffab68
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
@@ -851,6 +862,7 @@ SPEC CHECKSUMS:
   SDWebImage: 783af2c3fa36291a250030c4752ee370a9a51d13
   Yoga: e6ecf3fa25af9d4c87e94ad7d5d292eedef49749
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
+  ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
 PODFILE CHECKSUM: bcca3b1cd5f047e3e93057dc056af9f3a509325b
 
