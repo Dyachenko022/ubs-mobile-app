@@ -7,6 +7,7 @@ import {setInitialUrl, setLogonRootTabId} from '../../reducers/routing/actions';
 import {getMessages, getPersonalOffers, getUnreadNotifications} from '../../api/actions';
 import ParseCustomUrlScheme from '../../utils/ParseCustomUrlScheme';
 import BankTheme from '../../utils/bankTheme';
+import { exit } from '../../api/actions';
 import {Navigation} from 'react-native-navigation';
 
 const mapStateToProps = (state) => ({
@@ -34,6 +35,7 @@ const mapStateToProps = (state) => ({
   advertisement: state.loginPage.ad,
   initialUrl: state.routing.initialUrl,
   contractDataWarningVisible: state.userInfo.checkContractData.visible,
+  shouldLogout: state.userInfo.checkContractData.shouldLogout,
   personalOffers: state.personalOffers.personalOffers.filter(offer => offer.status === 1),
   confAccess: state.paymentsPage.configuration,
 });
@@ -48,6 +50,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     dispatch,
     setLogonRootTabId: () => dispatch(setLogonRootTabId(componentId)),
     getPersonalOffers: () => dispatch(getPersonalOffers()),
+    logout: () => dispatch(exit()),
     selectCategory: (categoryIndex, categoryName) => {
       dispatch(newProductsPageActions.selectCategory(categoryIndex));
       const showFilterButton = stateProps.productCategories[categoryIndex].filterParam.length > 0;

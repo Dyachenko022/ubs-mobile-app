@@ -180,19 +180,23 @@ export default class MyBankScreen extends React.Component {
 
   componentDidAppear() {
     if (this.props.contractDataErrorModalVisible) {
-      Navigation.showOverlay({
-        component: {
-          name: 'unisab/contractDataErrorModal',
-          options: {
-            layout: {
-              componentBackgroundColor: 'transparent',
-            },
-            overlay: {
-              interceptTouchOutside: true
+      if(this.props.shouldLogout) {
+        this.props.logout();
+      } else {
+        Navigation.showOverlay({
+          component: {
+            name: 'unisab/contractDataErrorModal',
+            options: {
+              layout: {
+                componentBackgroundColor: 'transparent',
+              },
+              overlay: {
+                interceptTouchOutside: true
+              }
             }
           }
-        }
-      });
+        });
+      }
     }
     this.props.setLogonRootTabId();
     if (!this.androidBackButtonListener) {

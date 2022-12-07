@@ -25,6 +25,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 
   return {
     ...stateProps,
+    ...ownProps,
     onCloseModal,
   };
 };

@@ -680,10 +680,29 @@ export function exit() {
     requestType: types.LoginPage.EXIT_REQ,
 
     onSuccess: async (dispatch, getState, response) => {
+      const { text, visible } = getState().userInfo.checkContractData
       dispatch({ type: types.LoginPage.EXIT_SUC });
       // вероятно надо чистить все, но сделал ровно по задаче
       AsyncStorage.removeItem('push');
       dispatch(changeAppRoot('login'));
+      if(visible) {
+        Navigation.showOverlay({
+          component: {
+            name: 'unisab/contractDataErrorModal',
+            passProps: {
+              text
+            },
+            options: {
+              layout: {
+                componentBackgroundColor: 'transparent',
+              },
+              overlay: {
+                interceptTouchOutside: true
+              }
+            }
+          }
+        });
+      }
     },
     onError: (dispatch, getState, response) => {
       dispatch({
