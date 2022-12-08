@@ -1,6 +1,7 @@
-import { takeLatest, put, delay, call, fork, putResolve, all } from 'redux-saga/effects';
+import { takeLatest, put, delay, call, fork, putResolve, all, select } from 'redux-saga/effects';
 import {
   advertising, checkContractData,
+  exit,
   getAccounts, getBonuses,
   getCards,
   getConfiguguration,
@@ -103,9 +104,16 @@ function* loginSaga() {
       yield putResolve(getDeposits()),
       yield putResolve(getCredits()),
       yield putResolve(getAccounts()),
-      yield putResolve(checkContractData()),
+      yield putResolve(checkContractData())
     ]);
-    yield put(changeAppRoot('after-login'));
+
+    const { checkContractData: contractData } = yield select((state) => state.userInfo);
+
+    if(contractData?.shouldLogout) {
+      yield put(exit())
+    } else {
+      yield put(changeAppRoot('after-login'));
+    }
   } catch (ex) {
     console.error('LOGIN SAGA FAILED', ex);
   }

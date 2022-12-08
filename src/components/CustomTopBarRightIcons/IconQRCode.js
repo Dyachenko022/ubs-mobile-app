@@ -2,6 +2,7 @@ import React from "react";
 import { View, TouchableOpacity, Platform } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
+import BankTheme from "../../utils/bankTheme";
 
 import { pushScreen } from "../../utils/navigationUtils";
 
@@ -30,7 +31,7 @@ const IconQRCode = (props) => {
       }}>
         <Icon name='qrcode' 
               size={20} 
-              color='#039dfc' />
+              color={BankTheme.color1} />
       </View>
     </TouchableOpacity>
   )
