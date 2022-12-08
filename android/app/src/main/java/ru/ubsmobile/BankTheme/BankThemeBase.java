@@ -24,6 +24,7 @@ public abstract class BankThemeBase extends ReactContextBaseJavaModule {
     abstract protected boolean ShowBonusesPage();
     abstract protected boolean ShowNotificationsSetting();
     abstract protected boolean AllowAddCardsToWallet();
+    abstract protected boolean ShowQrCodeIcon();
     abstract protected boolean ShowPersonalOffersOnMyBankPage();
     abstract protected CodeSettingPageTheme CodeSettingPageTheme();
     abstract protected boolean AllowShowCvvCode();
@@ -72,6 +73,7 @@ public abstract class BankThemeBase extends ReactContextBaseJavaModule {
         constants.put("allowAddCardsToWallet", AllowAddCardsToWallet());
         constants.put("showPersonalOffersOnMyBankPage", ShowPersonalOffersOnMyBankPage());
         constants.put("serverUrl", ServerUrl);
+        constants.put("showQrCodeIcon", ShowQrCodeIcon());
         constants.put("bankPhoneNumber", BankPhoneNumber());
         if (CodeSettingPageTheme() != null) {
             constants.put("codeSettingPageTheme", CodeSettingPageTheme().ToHashMap());
