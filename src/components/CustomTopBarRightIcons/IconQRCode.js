@@ -1,13 +1,17 @@
 import React from "react";
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Platform } from 'react-native';
+
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { pushScreen } from "../../utils/navigationUtils";
 
-import BankTheme from "../../utils/bankTheme";
-
 const IconQRCode = (props) => {
   return (
-    <TouchableOpacity onPress={() => {
+    <TouchableOpacity
+      style={{
+        paddingRight: Platform.OS === 'ios' ? 0 : 10,
+      }} 
+      onPress={() => {
        pushScreen({
                     componentId: props.parentComponentId,
                     screenName: 'unisab/Document',
@@ -24,12 +28,9 @@ const IconQRCode = (props) => {
         alignItems: 'center',
         justifyContent: 'center'
       }}>
-        <View style={{
-                      backgroundColor: BankTheme.color1, 
-                      width: 20, 
-                      height: 20, 
-                      borderRadius: 5
-                    }} />
+        <Icon name='qrcode' 
+              size={20} 
+              color='#039dfc' />
       </View>
     </TouchableOpacity>
   )
