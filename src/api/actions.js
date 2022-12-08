@@ -42,10 +42,8 @@ export async function myFetch(...params) {
       })
       .then(json => {
         if(isLog) console.log('{API RESPONSE}: ', json);
-        if (json.codeResult > 0 && json.codeResult !== 5 && json.codeResult !== 10) {
+        if (json.codeResult > 0 && json.codeResult !== 10) {
           return reject(json);
-        } else if (json.codeResult === 5) {
-          return json;
         }
 
         resolve(json);
