@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
+
     <application
         android:requestLegacyExternalStorage="true"
         android:name="ru.ubsmobile.MainApplication"
@@ -29,6 +30,7 @@
             android:name="ru.ubsmobile.MainActivity"
             android:screenOrientation="portrait"
             android:label="ИПБ-онлайн"
+            android:exported="true"
             tools:replace="android:label"
             >
             <intent-filter>

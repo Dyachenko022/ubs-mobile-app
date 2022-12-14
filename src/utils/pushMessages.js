@@ -6,7 +6,7 @@ import notifee, {
   AndroidStyle,
   AndroidVisibility,
   EventType,
-  IOSAuthorizationStatus
+  AuthorizationStatus
 } from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 import {store} from '../../App';
@@ -35,7 +35,7 @@ export async function setPushMessagesAndroid() {
     // Локальное уведомление
     const settings = await notifee.requestPermission();
     const text = remoteMessage.data.body;
-    if (settings.authorizationStatus >= IOSAuthorizationStatus.AUTHORIZED) {
+    if (settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED) {
       const notificationId = await notifee.displayNotification({
         title: remoteMessage.data.title,
         body: text,
