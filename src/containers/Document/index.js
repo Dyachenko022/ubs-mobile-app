@@ -1542,6 +1542,7 @@ class Document extends React.Component {
           });
       });
     });
+    this.setState({ isLoading: true })
     Promise.all(actionsPromises)
       .then(responseArray => {
         const actions = {};
@@ -1566,6 +1567,7 @@ class Document extends React.Component {
 
         this.setState({
           actions: Object.assign({}, this.state.actions, actions),
+          isLoading: false,
         });
       })
       .catch(err => { console.error(err);
